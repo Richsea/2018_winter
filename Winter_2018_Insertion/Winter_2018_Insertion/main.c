@@ -6,10 +6,12 @@ int main()
 	int *printData;
 	int i = 0;
 	printData = doInsertionSort();
-	
-	while (printData != '/0') {
+
+	while (*printData != '\0') {
+		int temp = printData;
 		printf("%d", *printData);
-		printData + 1;
+
+		printData++;
 	}
 
 	return 0;
