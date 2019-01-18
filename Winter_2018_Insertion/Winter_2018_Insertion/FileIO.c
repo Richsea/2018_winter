@@ -26,22 +26,31 @@ int readFile() {
 	return 0;	
 }
 
+//fprintf와 fwrite 모두 사용할 때 fclose를 해줘야 변경사항이 적용된다.
 int writeFile(int* outputData) {
+	char answer[8];
+	char* data = malloc(sizeof(int) * 4);
 	fp = fopen("data02_Insertion.txt", "w");
+	printf("%d", *outputData);
 
-	fprintf(fp, "test");
-	char* data = saveChar(outputData);
-
-	fp = fopen("data02_Insertion.txt", "a");
-	fprintf(fp, "완료");
-	/*
-	while (*outputData != '\0') {
-		
-	}
-	*/
-	fprintf(fp, "완료");
+	data = *outputData;
+	printf("%d", data);		// 
+	printf("%d", &data);	// 주소
+	outputData++;
+	fprintf(fp, data);
+	//fwrite(*data, strlen(data), 1, fp);
 	fclose(fp);
+	
+	while (*outputData != '\0') {
+		fp = fopen("data02_Insertion.txt", "a");
+		data = *outputData;
+		fprintf(fp, ',');
+		fprintf(fp, data);
+		fclose(fp);
+		outputData++;
+	}
 
+	//char* data = saveChar(outputData);
 
 	return 0;
 }
@@ -49,16 +58,14 @@ int writeFile(int* outputData) {
 char* saveChar(int* outputData) {
 	//char* data = malloc(sizeof(char) * 1000);
 	//strcat(data, outputData);
-	char* intData;
-	int location = 0;
 
-	intData = *(char*)outputData;
-	
 	//체크
 	printf("%d\n", *outputData);
 
 	int size = sizeof(outputData);
 	char* result = malloc(sizeof(int) * size);	//char형은 크기가 넘어가면 짤리는 문제때문에 동적할당
+	char** data = malloc(sizeof(int) * 4);
+
 	result = *outputData;
 	outputData++;
 	
@@ -66,13 +73,13 @@ char* saveChar(int* outputData) {
 	printf("%d:%d\n", *outputData, result);
 
 	while (*outputData != '\0') {
+		data = *outputData;
 		append(result, ',');
 		printf("%d", result);
 		append(result, *outputData);
 		printf("%d", result);
 		strcat(result, *outputData);
 		printf("%d", result);
-		location++;
 	}
 	/*
 	while (*outputData != '\0') {

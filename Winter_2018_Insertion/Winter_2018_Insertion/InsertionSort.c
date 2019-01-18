@@ -18,7 +18,6 @@ int* doInsertionSort()
 	int j = 0;
 	int checkSorting = 0;
 	int temp = 0;
-	int dataLength = sizeof(data)/4;	//sizeof("DATA")는 data의 크기를 byte단위로 나타내기 때문에 block단위로 표시하기 위해 /4를 해준다
 
 	while(data[i] != '\0')
 	{
