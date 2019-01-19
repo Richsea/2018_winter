@@ -3,6 +3,7 @@
 #include "FileIO.h"
 #include <stdio.h>					// fopen, fgets, fclose 함수가 선언된 헤더 파일
 #include <string.h>
+#include <stdlib.h>
 
 int readFile() {
 	fp = fopen("data02.txt", "r");
@@ -27,30 +28,40 @@ int readFile() {
 }
 
 //fprintf와 fwrite 모두 사용할 때 fclose를 해줘야 변경사항이 적용된다.
-int writeFile(int* outputData) {
-	char answer[8];
-	char* data = malloc(sizeof(int) * 4);
-	fp = fopen("data02_Insertion.txt", "w");
-	printf("%d", *outputData);
-
-	data = *outputData;
-	printf("%d", data);		// 
-	printf("%d", &data);	// 주소
-	outputData++;
-	fprintf(fp, data);
-	//fwrite(*data, strlen(data), 1, fp);
-	fclose(fp);
+int writeFile(int* outputData[]) {
+	fp = fopen("data02_Insertion.txt", "wt");
 	
-	while (*outputData != '\0') {
-		fp = fopen("data02_Insertion.txt", "a");
-		data = *outputData;
-		fprintf(fp, ',');
-		fprintf(fp, data);
-		fclose(fp);
-		outputData++;
+	char answer[16];
+	int size = 0;
+	int temp = 0;
+
+	while (*(outputData+temp) != '\0') {
+		size++;
+		temp++;
 	}
 
-	//char* data = saveChar(outputData);
+	char* data = (char*)malloc(sizeof(char)*size);
+	memset(data, NULL, sizeof(char)*size);
+
+	for (int i = 0; i < size; i++)
+	{
+		char s1[10];
+		printf("%d\n", outputData[i]);
+		sprintf(s1, "%d", outputData[i]);
+		printf("%s\n",s1);
+		strcat(s1,",");
+		strcat(data,s1);
+	}
+
+
+	printf("%s", data);
+
+	fprintf(fp,data);
+
+
+	//fprintf(fp, data);
+	//fwrite(*data, strlen(data), 1, fp);
+	fclose(fp);
 
 	return 0;
 }
@@ -100,4 +111,8 @@ void append(char *dst, char c) {
 	while (*p != '\0')	p++;
 	*p = c;
 	*(p + 1) = '\0';
+}
+
+void addArray(int* arr) {
+	
 }

@@ -6,6 +6,8 @@ FILE *fp;
 
 int readFile(void);
 
-int writeFile(int* outputData);
+int writeFile(int* outputData[]);
 char* saveChar(int* outputData);
+void addArray(int* arr);
+
 void append(char* dst, char c);
