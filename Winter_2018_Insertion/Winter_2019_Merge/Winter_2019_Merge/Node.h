@@ -5,7 +5,7 @@ typedef struct _node {
 	int data;
 }node;
 
-node* getNext() {};
+node* getNext();
 void setNext(node* next);
 
 void setData(int data);
