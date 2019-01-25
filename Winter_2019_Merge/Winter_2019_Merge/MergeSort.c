@@ -16,15 +16,27 @@ int* doMergeSort(int start, int end)
 	}
 	int mid = (start+end) / 2;
 
-	int *front = doMergeSort(start, mid);
-	int *back = doMergeSort(mid+1, end);
+	int *front = (int*)malloc(sizeof(int));// *mid - start + 1));
+	int *back = (int*)malloc(sizeof(int)*(end-mid));
+
+	memset(front, NULL, sizeof(int)*(mid - start + 1));
+	memset(back, NULL, sizeof(int)*(end - mid));
+
+	front = doMergeSort(start, mid);
+	back = doMergeSort(mid+1, end);
+	
+	int checkSize = sizeof(mid - start + 1);
+	int checkSize2 = sizeof(int) * (end - mid);
+
 	int mergeSize = (sizeof(front) + sizeof(back)) / sizeof(int);
 	
 	// mergeArray를 위한 선언 및 초기화
 	int *mergeArray = (int*)malloc(sizeof(int)*mergeSize);
 	memset(mergeArray, NULL, sizeof(int)*mergeSize);
+	int loc1 = 0;
+	int loc2 = 0;
 	int location = 0;
-	
+
 	//문제점 : front가 부분만 가져오는 것이 아니라 data를 통채로 가져와버린다
 	while (*front != '\0' || *back != '\0') 
 	{
@@ -40,6 +52,7 @@ int* doMergeSort(int start, int end)
 			front++;
 		}
 		mergeArray[location] = temp;
+		printf("%d\n", *mergeArray);
 		location++;
 	}
 	
@@ -59,9 +72,10 @@ int* doMergeSort(int start, int end)
 		{
 			mergeArray[location] = *back;
 			location++;
-			front++;
+			back++;
 		}
 	}
+	return &mergeArray;
 }
 
 void swap(int* arr1, int*arr2) 
