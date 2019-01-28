@@ -1,5 +1,6 @@
 #include "MergeSort.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int data[] =
 { 1381,20144,2937,8401 };/*, 31904, 22750, 27539, 6615, 1492, 8110,
@@ -25,18 +26,32 @@ int* doMergeSort(int start, int end)
 	front = doMergeSort(start, mid);
 	back = doMergeSort(mid+1, end);
 	
-	int checkSize = sizeof(mid - start + 1);
-	int checkSize2 = sizeof(int) * (end - mid);
-
 	int mergeSize = (sizeof(front) + sizeof(back)) / sizeof(int);
 	
 	// mergeArray를 위한 선언 및 초기화
-	int *mergeArray = (int*)malloc(sizeof(int)*mergeSize);
+	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize);
 	memset(mergeArray, NULL, sizeof(int)*mergeSize);
 	int loc1 = 0;
 	int loc2 = 0;
 	int location = 0;
+	while (loc1+start <= mid && loc2+mid+1 <= end) 
+	{
+		int temp;
+		if (front[loc1] > back[loc2])
+		{
+			temp = back[loc2];
+			loc2++;
+		}
+		else
+		{
+			temp = front[loc1];
+			loc1++;
+		}
+		mergeArray[location] = temp;
+		location++;
+	}
 
+	/*
 	//문제점 : front가 부분만 가져오는 것이 아니라 data를 통채로 가져와버린다
 	while (*front != '\0' || *back != '\0') 
 	{
@@ -55,27 +70,34 @@ int* doMergeSort(int start, int end)
 		printf("%d\n", *mergeArray);
 		location++;
 	}
-	
-	if (*front != '\0') 
+	*/
+	if (loc1+start <= mid) 
 	{
-		while (*front != '\0') 
+		while (loc1+start <= mid) 
 		{
-			mergeArray[location] = *front;
+			mergeArray[location] = front[loc1];
+			loc1++;
 			location++;
-			front++;
 		}
 	}
 
-	if (*back != '\0')
+	if (loc2+mid+1 <= end)
 	{
-		while (*back != '\0')
+		while (loc2+mid+1 <= end)
 		{
-			mergeArray[location] = *back;
+			mergeArray[location] = back[loc2];
+			loc2++;
 			location++;
-			back++;
 		}
 	}
-	return &mergeArray;
+	int i = 0;
+	while (i < location)
+	{
+		printf("%d\n", mergeArray[i]);
+		i++;
+	}
+
+	return mergeArray;
 }
 
 void swap(int* arr1, int*arr2) 
