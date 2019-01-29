@@ -3,11 +3,11 @@
 #include <stdio.h>
 
 int data[] =
-{ 1381,20144,2937,8401 };/*, 31904, 22750, 27539, 6615, 1492, 8110,
+{ 1381,20144,2937,8401, 31904, 22750, 27539, 6615, 1492, 8110,
 	12833,11891,25449,14327,19563,21346,16756,16012,16590,7966,
 	8155,10696,2560,18444,10171,22890,14236,21239,28678,22691,30682,
 	1469,30065,1646,28317,29256,18829,6176,32180,11712,15667,10816,25177,
-	2047,2598,21400,19454,22342,16372,28300 };*/
+	2047,2598,21400,19454,22342,16372,28300 };
 int size = sizeof(data) / sizeof(int);
 
 int* doMergeSort(int start, int end)
@@ -17,7 +17,7 @@ int* doMergeSort(int start, int end)
 	}
 	int mid = (start+end) / 2;
 
-	int *front = (int*)malloc(sizeof(int));// *mid - start + 1));
+	int *front = (int*)malloc(sizeof(int)*(mid - start + 1));
 	int *back = (int*)malloc(sizeof(int)*(end-mid));
 
 	memset(front, NULL, sizeof(int)*(mid - start + 1));
@@ -29,7 +29,7 @@ int* doMergeSort(int start, int end)
 	int mergeSize = (sizeof(front) + sizeof(back)) / sizeof(int);
 	
 	// mergeArray를 위한 선언 및 초기화
-	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize);
+	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize + 1);
 	memset(mergeArray, NULL, sizeof(int)*mergeSize);
 	int loc1 = 0;
 	int loc2 = 0;
@@ -51,26 +51,6 @@ int* doMergeSort(int start, int end)
 		location++;
 	}
 
-	/*
-	//문제점 : front가 부분만 가져오는 것이 아니라 data를 통채로 가져와버린다
-	while (*front != '\0' || *back != '\0') 
-	{
-		int temp;
-		if (*front > *back) 
-		{
-			temp = *back;
-			back++;
-		}
-		else
-		{
-			temp = *front;
-			front++;
-		}
-		mergeArray[location] = temp;
-		printf("%d\n", *mergeArray);
-		location++;
-	}
-	*/
 	if (loc1+start <= mid) 
 	{
 		while (loc1+start <= mid) 
@@ -90,6 +70,7 @@ int* doMergeSort(int start, int end)
 			location++;
 		}
 	}
+
 	int i = 0;
 	while (i < location)
 	{
@@ -97,6 +78,10 @@ int* doMergeSort(int start, int end)
 		i++;
 	}
 
+	printf("---------------\n");
+	free(front);
+	free(back);
+	
 	return mergeArray;
 }
 
