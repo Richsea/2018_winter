@@ -5,10 +5,11 @@ int main()
 {
 	int* data;
 	data = doMergeSort(0, getSize()-1);
-
-	while (*data != '\0')
+	
+	int i = 0;
+	while (i != getSize())
 	{
-		printf("%d\n", *data);
-		data++;
+		printf("%d\n", data[i]);
+		i++;
 	}
 }

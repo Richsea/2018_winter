@@ -25,11 +25,11 @@ int* doMergeSort(int start, int end)
 
 	front = doMergeSort(start, mid);
 	back = doMergeSort(mid+1, end);
-	
-	int mergeSize = (sizeof(front) + sizeof(back)) / sizeof(int);
+
+	int mergeSize = end - start + 1;
 	
 	// mergeArray를 위한 선언 및 초기화
-	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize + 1);
+	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize);
 	memset(mergeArray, NULL, sizeof(int)*mergeSize);
 	int loc1 = 0;
 	int loc2 = 0;
@@ -44,7 +44,7 @@ int* doMergeSort(int start, int end)
 		}
 		else
 		{
-			temp = front[loc1];
+				temp = front[loc1];
 			loc1++;
 		}
 		mergeArray[location] = temp;
@@ -71,6 +71,7 @@ int* doMergeSort(int start, int end)
 		}
 	}
 
+	/*
 	int i = 0;
 	while (i < location)
 	{
@@ -79,9 +80,8 @@ int* doMergeSort(int start, int end)
 	}
 
 	printf("---------------\n");
-	free(front);
-	free(back);
-	
+	*/
+
 	return mergeArray;
 }
 
