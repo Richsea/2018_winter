@@ -1,8 +1,10 @@
 #define	_CRT_SECURE_NO_WORNINGS
 
 #include "FileIO.h"
+#include "Node.h"
 #include <string.h>
 
+#include <time.h>
 
 int* readFile()
 {
@@ -28,8 +30,11 @@ int* readFile()
 	int* data = malloc(size + 1);
 	memset(data, NULL, size + 1);
 
+	node* head = new_node();
+
 	char s1[10];
 	memset(s1, NULL, 10);
+
 	while (i < size)
 	{
 		if (buffer[i] != ',')
@@ -41,14 +46,35 @@ int* readFile()
 		else
 		{
 			int temp = atoi(s1);
-			data[loc] = temp;
+
+			node* _next = new_node();
+			node* _current = head;
+
+			while (_current->next != NULL)
+			{
+				_current = _current->next;
+			}
+			
+			setData(_next, temp);
+			setNext(_current, _next);
+			
 			j = 0;
-			loc++;
 			i++;
 			memset(s1, NULL, 10);
 		}
 	}
-	data[loc] = atoi(s1);
+
+	// 파일 입출력 최종 출력
+	node* _current = head;
+	node* _next = new_node();
+
+	while (_current->next != NULL)
+	{
+		_current = _current->next;
+	}
+	setData(_next, atoi(s1));
+	setNext(_current, _next);
+	
 	fclose(fp);
 
 	return data;
