@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdio.h>
+#include "Node.h"
 
 FILE *fp;
 
-int* readFile(void);
-int writeFile(int* outputData);
+node* readFile(void);
+int writeFile(node* outputData);

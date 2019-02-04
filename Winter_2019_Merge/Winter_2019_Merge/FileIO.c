@@ -1,12 +1,11 @@
 #define	_CRT_SECURE_NO_WORNINGS
 
 #include "FileIO.h"
-#include "Node.h"
 #include <string.h>
 
 #include <time.h>
 
-int* readFile()
+node* readFile()
 {
 	fp = fopen("data02.txt", "r");
 
@@ -77,10 +76,10 @@ int* readFile()
 	
 	fclose(fp);
 
-	return data;
+	return head;
 }
 
-int writeFile(int* outputData)
+int writeFile(node* outputData)
 {
 	fp = fopen("data02_MergeSort.txt", "wt");
 
@@ -88,6 +87,7 @@ int writeFile(int* outputData)
 	int size = 0;
 	int temp = 0;
 
+	/*  배열로 된 데이터로 쓰기를 진행할 때 사용
 	while (*(outputData + temp) != '\0')
 	{
 		size++;
@@ -105,9 +105,36 @@ int writeFile(int* outputData)
 		strcat(s1, ",");
 		strcat(data, s1);
 	}
-
+	
 	char s1[10];
 	sprintf(s1, "%d", outputData[size]);
+	strcat(data, s1);
+	*/
+
+	node* head = outputData->next;
+
+	while (head != NULL)
+	{
+		size++;
+		head = head->next;
+	}
+
+	char* data = (char*)malloc(sizeof(char)*size);
+	memset(data, NULL, sizeof(char)* size);
+	temp = 0;
+
+	head = outputData->next;
+
+	while (head->next != NULL)
+	{
+		char s1[10];
+		sprintf(s1, "%d", head->data);
+		strcat(s1, ",");
+		strcat(data, s1);
+		head = head->next;
+	}
+	char s1[10];
+	sprintf(s1, "%d", head->data);
 	strcat(data, s1);
 
 	fprintf(fp, data);

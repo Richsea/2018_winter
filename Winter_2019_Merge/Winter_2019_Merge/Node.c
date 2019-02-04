@@ -1,6 +1,5 @@
 #include "Node.h"
 #include <stdlib.h>
-#include <limits.h>	// 자료형의 최대값과 최소값이 정의된 헤더파일
 
 #define	NewObject(TYPE)		(TYPE*)malloc(sizeof(TYPE))
 
