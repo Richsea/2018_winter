@@ -2,31 +2,99 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int data[] =
-{ 1381,20144,2937,8401 };/*, 31904, 22750, 27539, 6615, 1492, 8110,
-	12833,11891,25449,14327,19563,21346,16756,16012,16590,7966,
-	8155,10696,2560,18444,10171,22890,14236,21239,28678,22691,30682,
-	1469,30065,1646,28317,29256,18829,6176,32180,11712,15667,10816,25177,
-	2047,2598,21400,19454,22342,16372,28300 };*/
-int size = sizeof(data) / sizeof(int);
+// Linked List를 이용한 merge sort
+node* listMergeSort(node* _this, int start, int end)
+{
+	if (start == end)
+	{
+		node* newNode = new_node();
+		setNext(newNode, _this->next);
+		return newNode;
+	}
 
-int* doMergeSort(int start, int end)
+	int mid = (start + end) / 2;
+
+	node* front = listMergeSort(_this, start, mid);
+	for (int i = start; i < mid+1; i++)
+	{
+		_this = _this->next;
+	}
+	node* back = listMergeSort(_this, mid+1, end);
+
+	// mergeSort의 conquer 진행
+	node* mergedNode = new_node();
+	node* head = mergedNode;
+	int front_Loc = 0;
+	int back_Loc = 0;
+	
+	while (front_Loc + start <= mid && back_Loc + mid + 1 <= end)
+	{
+		node* temp = new_node();
+		if (getNext(front)->data < getNext(back)->data)
+		{
+			setData(temp, getData(front->next));
+			setNext(mergedNode, temp);
+			front = getNext(front);
+			front_Loc++;
+			mergedNode = mergedNode->next;
+		}
+		else
+		{
+			setData(temp, getData(back->next));
+			setNext(mergedNode, temp);
+			back = getNext(back);
+			back_Loc++;
+			mergedNode = mergedNode->next;
+		}
+	}
+
+	if (front_Loc + start <= mid)
+	{
+		while (front_Loc + start <= mid)
+		{
+			node* temp = new_node();
+			setData(temp, getData(front->next));
+			setNext(mergedNode, temp);
+			front = getNext(front);
+			front_Loc++;
+			mergedNode = mergedNode->next;
+		}
+	}
+
+	if (back_Loc + mid + 1 <= end)
+	{
+		while (back_Loc + mid + 1 <= end)
+		{
+			node* temp = new_node();
+			setData(temp, getData(back->next));
+			setNext(mergedNode, temp);
+			back = getNext(back);
+			back_Loc++;
+			mergedNode = mergedNode->next;
+		}
+	}
+
+	return head;
+}
+
+// 배열 데이터를 이용한 merge sort
+int* doMergeSort(int* data, int start, int end)
 {
 	if (end == start) {
 		return &data[start];
 	}
 	int mid = (start+end) / 2;
 
-	int *front = (int*)malloc(sizeof(int));// *mid - start + 1));
+	int *front = (int*)malloc(sizeof(int)*(mid - start + 1));
 	int *back = (int*)malloc(sizeof(int)*(end-mid));
 
 	memset(front, NULL, sizeof(int)*(mid - start + 1));
 	memset(back, NULL, sizeof(int)*(end - mid));
 
-	front = doMergeSort(start, mid);
-	back = doMergeSort(mid+1, end);
-	
-	int mergeSize = (sizeof(front) + sizeof(back)) / sizeof(int);
+	front = doMergeSort(data, start, mid);
+	back = doMergeSort(data, mid+1, end);
+
+	int mergeSize = end - start + 1;
 	
 	// mergeArray를 위한 선언 및 초기화
 	int* mergeArray = (int*)malloc(sizeof(int)*mergeSize);
@@ -44,33 +112,13 @@ int* doMergeSort(int start, int end)
 		}
 		else
 		{
-			temp = front[loc1];
+				temp = front[loc1];
 			loc1++;
 		}
 		mergeArray[location] = temp;
 		location++;
 	}
 
-	/*
-	//문제점 : front가 부분만 가져오는 것이 아니라 data를 통채로 가져와버린다
-	while (*front != '\0' || *back != '\0') 
-	{
-		int temp;
-		if (*front > *back) 
-		{
-			temp = *back;
-			back++;
-		}
-		else
-		{
-			temp = *front;
-			front++;
-		}
-		mergeArray[location] = temp;
-		printf("%d\n", *mergeArray);
-		location++;
-	}
-	*/
 	if (loc1+start <= mid) 
 	{
 		while (loc1+start <= mid) 
@@ -90,25 +138,25 @@ int* doMergeSort(int start, int end)
 			location++;
 		}
 	}
-	int i = 0;
-	while (i < location)
-	{
-		printf("%d\n", mergeArray[i]);
-		i++;
-	}
 
 	return mergeArray;
 }
 
-void swap(int* arr1, int*arr2) 
-{
-	int temp;
-	temp = *arr1;
-	*arr1 = *arr2;
-	*arr2 = temp;
-}
-
+/*
 int getSize() 
 {
+	return size;
+}
+*/
+
+int getSize(node* _this)
+{
+	int size = 0;
+
+	while (_this->next != NULL)
+	{
+		size++;
+		_this = _this->next;
+	}
 	return size;
 }
