@@ -1,18 +1,21 @@
 #include "Node.h"
 
+#define NewObject(TYPE)	(TYPE*)malloc(sizeof(TYPE));
+
 node* new_node()
 {
-	node* _this;
+	node* _this = NewObject(node);
+	_this->title = NewObject(char);
 	_this = NULL;
 }
 
-void setData(node* _this, char* data)
+void setTitle(node* _this, char* data)
 {
-	_this->data = data;
+	_this->title = data;
 }
-char* getData(node* _this)
+char* getTitle(node* _this)
 {
-	return _this->data;
+	return _this->title;
 }
 void setNext(node* _this, node* _next)
 {
@@ -21,6 +24,14 @@ void setNext(node* _this, node* _next)
 node* getNext(node* _this)
 {
 	return _this->next;
+}
+void setNumber(node* _this, int num)
+{
+	_this->number;
+}
+int getNumber(node* _this)
+{
+	return _this->number;
 }
 
 boolean node_delete(node* _this)

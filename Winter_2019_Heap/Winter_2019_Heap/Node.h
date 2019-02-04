@@ -10,7 +10,8 @@ typedef enum _boolean {
 typedef struct _node 
 {
 	struct _node *next;
-	char* data;
+	int number;
+	char* title;
 }node;
 
 #define FALSE 0
@@ -18,10 +19,12 @@ typedef struct _node
 
 node* new_node(void);
 
-void setData(node* _this, char* data);
-char* getData(node* _this);
+void setTitle(node* _this, char* data);
+char* getTitle(node* _this);
 void setNext(node* _this, node* _next);
 node* getNext(node* _this);
+void setNumber(node* _this, int num);
+int getNumber(node* _this);
 
 boolean node_delete(node* _this);
 
