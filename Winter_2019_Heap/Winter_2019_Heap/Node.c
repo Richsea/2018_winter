@@ -5,7 +5,7 @@
 node* new_node()
 {
 	node* _this = NewObject(node);
-	_this->title = NewObject(char);
+	//_this->title = NewObject(char);	->	중단점 오류가 생기는데 이유는 파악 못함
 	_this = NULL;
 }
 
@@ -25,11 +25,11 @@ node* getNext(node* _this)
 {
 	return _this->next;
 }
-void setNumber(node* _this, int num)
+void setNum(node* _this, int num)
 {
-	_this->number;
+	_this->number = num;
 }
-int getNumber(node* _this)
+int getNum(node* _this)
 {
 	return _this->number;
 }

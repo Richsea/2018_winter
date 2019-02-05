@@ -23,8 +23,8 @@ void setTitle(node* _this, char* data);
 char* getTitle(node* _this);
 void setNext(node* _this, node* _next);
 node* getNext(node* _this);
-void setNumber(node* _this, int num);
-int getNumber(node* _this);
+void setNum(node* _this, int num);
+int getNum(node* _this);
 
 boolean node_delete(node* _this);
 
