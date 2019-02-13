@@ -17,32 +17,26 @@ node* doHeapSort(node* _this)
 			end = end->next;
 		}
 		
-		node* temp = getNext(end->next);
-
-		setNext(head, end->next);
-		setNext(head->next, getNext(begin));
-
-		setNext(end, begin);
-		setNext(end->next, temp);
-		size--;
-
-		temp = head;
-		temp = temp->next;
-		while (temp != NULL)
+		if (start + 1 == size)
 		{
-			printf("%d\n", temp->number);
-			temp = temp->next;
+			node* nextBegin = getNext(begin->next);
+			setNext(head, end->next);
+			setNext(head->next, begin);
+			setNext(begin, nextBegin);
 		}
-		printf("-----------------------------------\n");
-	}
+		else
+		{
+			node* temp = getNext(end->next);
 
-	head = head->next;
-	while (head != NULL)
-	{
-		printf("%d\n", head->number);
-		head = head->next;
-	}
-	
+			setNext(head, end->next);
+			setNext(head->next, getNext(begin));
+
+			setNext(end, begin);
+			setNext(end->next, temp);
+		}
+
+		size--;	
+	}	
 }
 
 node* heap(node* _this, int parent, int last)
@@ -59,8 +53,6 @@ node* heap(node* _this, int parent, int last)
 
 	int leftLoc = 2 * parent;
 	int rightLoc = leftLoc + 1;
-	//
-	int checkParent = parent;
 	boolean change = FALSE;
 
 	for (int i = parent; i < leftLoc; i++)
@@ -71,53 +63,78 @@ node* heap(node* _this, int parent, int last)
 	_this = _this->next;
 	node* _right = heap(_this, rightLoc, last);
 
-	/*
-	parent가 1, child가 2인 data를 이용
-	*/
 	if (rightLoc > last)
 	{
 		if (getNum(getNext(_left)) > getNum(getNext(_parent)))
 		{
-			node* _temp = _left->next;
-			node* _temp2 = getNext(_parent->next);
-			setNext(_left, _parent->next);
-			setNext(_left->next, _temp->next);
+			if (parent == 1)
+			{
+				node* _nextRight = _right->next;
+				node* tempLeft = _left;
 
-			setNext(_parent, _temp);
-			setNext(_parent->next, _temp2);	
+				_left = getNext(_left);
+				setNext(_parent, _left);
+				setNext(_left, tempLeft);
+				setNext(tempLeft, _nextRight);
+			}
+			else
+			{
+				node* _leftChild = getNext(_left);
+				node* _nextParent = getNext(_parent->next);
+
+				setNext(_left, _parent->next);
+				setNext(_left->next, _leftChild->next);
+
+				setNext(_parent, _leftChild);
+				setNext(_leftChild, _nextParent);
+			}
 		}
+
 		change = TRUE;
 	}
 
 	int max = MAX(getNum(getNext(_left)), getNum(getNext(_right)));
 	if (getNum(getNext(_parent)) < max && !change)
 	{
-		node* _temp;
-		node* _temp2;
+		node* _newChild;
+		node* _nextParent;
+
 		if (getNum(getNext(_left)) == max)
 		{
-			_temp = _left->next;
-			_temp2 = getNext(_parent->next);
+			if (parent == 1)
+			{
+				node* _nextRight = _right->next;
+				node* tempLeft = _left;
 
-			setNext(_left, _parent->next);
-			setNext(_left->next, getNext(_temp));
+				_left = getNext(_left);
+				setNext(_parent, _left);
+				setNext(_left, tempLeft);
+				setNext(tempLeft, _nextRight);
+			}
+			else
+			{
+				_newChild = getNext(_left);
+				_nextParent = getNext(_parent->next);
 
-			setNext(_parent, _temp);
-			setNext(_parent->next, _temp2);
+				setNext(_left, _parent->next);
+				setNext(_left->next, _newChild->next);
 
-				
+				setNext(_parent, _newChild);
+				setNext(_newChild, _nextParent);
+			}
+
 			change = TRUE;
 		}
 		else
 		{
-			_temp = _right->next;
-			_temp2 = getNext(_parent->next);
+			_newChild = getNext(_right);
+			_nextParent = getNext(_parent->next);
 
 			setNext(_right, _parent->next);
-			setNext(_right->next, getNext(_temp));
+			setNext(_right->next, _newChild->next);
 
-			setNext(_parent, _temp);
-			setNext(_parent->next, _temp2);
+			setNext(_parent, _newChild);
+			setNext(_newChild, _nextParent);
 		}
 
 		if (change)
