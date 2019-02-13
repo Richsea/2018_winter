@@ -5,5 +5,5 @@
 #include "Node.h"
 
 node* doHeapSort(node* _this);
-node* heapify(node* _this, int parent, int last);
+node* heap(node* _this, int parent, int last);
 int getSize(node* _this);

@@ -94,9 +94,18 @@ node* readFile(void)
 	// 마지막에 'ENTER'가 입력이 되지 않아서 최종데이터를 저장하지 못하는 상황 방지
 	if (check)
 	{
+		while (s1[j] != '\0')
+		{
+			j++;
+		}
+
+		char* data = (char*)malloc(sizeof(char) * j);
+		memset(data, NULL, sizeof(char) * j);
+		strcat(data, s1);
+
 		node* _next = new_node();
 
-		setTitle(_next, s1);
+		setTitle(_next, data);
 		setNum(_next, title_num);
 		setNext(_current, _next);
 	}

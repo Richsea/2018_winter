@@ -1,5 +1,8 @@
+#include "Node.h"
 
 int main()
 {
-	readFile();
+	node* _node;
+	_node = readFile();
+	_node = doHeapSort(_node);
 }

@@ -5,80 +5,128 @@ node* doHeapSort(node* _this)
 	node* head = _this;
 	int size = getSize(_this);
 	
-	int start = 0;
-	while (start == size)
+	int start = 1;
+	while (start != size)
 	{
-		heapify(head, start, size);
+		heap(head, start, size);
+
+		node* end = head;
+		node* begin = getNext(head);
+		for (int i = 0; i < size - start; i++)
+		{
+			end = end->next;
+		}
+		
+		node* temp = getNext(end->next);
+
+		setNext(head, end->next);
+		setNext(head->next, getNext(begin));
+
+		setNext(end, begin);
+		setNext(end->next, temp);
 		size--;
+
+		temp = head;
+		temp = temp->next;
+		while (temp != NULL)
+		{
+			printf("%d\n", temp->number);
+			temp = temp->next;
+		}
+		printf("-----------------------------------\n");
+	}
+
+	head = head->next;
+	while (head != NULL)
+	{
+		printf("%d\n", head->number);
+		head = head->next;
 	}
 	
 }
 
-node* heapify(node* _this, int parent, int last)
+node* heap(node* _this, int parent, int last)
 {
 	//parent는 현재 노드
 	//last는 노드의 끝의 위치
-	if (parent <= last)
+	if (parent*2 > last)
 	{
 		return _this;
 	}
 
 	node* head = _this;
-	node* _parent = _this->next;
+	node* _parent = _this;
 
 	int leftLoc = 2 * parent;
 	int rightLoc = leftLoc + 1;
-	boolean changeLeft = FALSE;
+	//
+	int checkParent = parent;
+	boolean change = FALSE;
 
-	for (int i = 0; i < leftLoc + 1; i++)
+	for (int i = parent; i < leftLoc; i++)
 	{
 		_this = _this->next;
 	}
-	node* _left = doHeapSort(_this, leftLoc, last);
+	node* _left = heap(_this, leftLoc, last);
 	_this = _this->next;
-	node* _right = doHeapSort(_this, rightLoc, last);
+	node* _right = heap(_this, rightLoc, last);
 
+	/*
+	parent가 1, child가 2인 data를 이용
+	*/
 	if (rightLoc > last)
 	{
-		if (getNum(_left) > getNum(_parent))
+		if (getNum(getNext(_left)) > getNum(getNext(_parent)))
 		{
-			node* _temp = _left;
-			_left = _parent;
-			setNext(_left, _temp->next);
+			node* _temp = _left->next;
+			node* _temp2 = getNext(_parent->next);
+			setNext(_left, _parent->next);
+			setNext(_left->next, _temp->next);
 
-			setNum(_parent, getNum(_temp));
-			setTitle(_parent, getTitle(_temp));
+			setNext(_parent, _temp);
+			setNext(_parent->next, _temp2);	
 		}
+		change = TRUE;
 	}
 
-	int max = MAX(getNum(_left), getNum(_right));
-	if (getNum(_parent) < max)
+	int max = MAX(getNum(getNext(_left)), getNum(getNext(_right)));
+	if (getNum(getNext(_parent)) < max && !change)
 	{
 		node* _temp;
-		if (getNum(_left) == max)
+		node* _temp2;
+		if (getNum(getNext(_left)) == max)
 		{
-			_temp = _left;
-			_left = _parent;
-			setNext(_left, getNext(_temp));
-			changeLeft = TRUE;
+			_temp = _left->next;
+			_temp2 = getNext(_parent->next);
+
+			setNext(_left, _parent->next);
+			setNext(_left->next, getNext(_temp));
+
+			setNext(_parent, _temp);
+			setNext(_parent->next, _temp2);
+
+				
+			change = TRUE;
 		}
 		else
 		{
-			_temp = _right;
-			_right = _parent;
-			setNext(_right, _temp->next);
+			_temp = _right->next;
+			_temp2 = getNext(_parent->next);
+
+			setNext(_right, _parent->next);
+			setNext(_right->next, getNext(_temp));
+
+			setNext(_parent, _temp);
+			setNext(_parent->next, _temp2);
 		}
 
-		setNum(_parent, getNum(_temp));
-		setTitle(_parent, getTitle(_temp));
-
-		if (changeLeft)
+		if (change)
 		{
-			head = doHeapSort(_this, leftLoc, last);
+			heap(_left, leftLoc, last);
 		}
 		else
 		{
-			head = doHeapSort(_this, rightLoc, last);
+			heap(_right, rightLoc, last);
 		}
 	}
 	return head;
@@ -87,11 +135,11 @@ node* heapify(node* _this, int parent, int last)
 int getSize(node* _this)
 {
 	int size = 0;
-
+	
 	while (_this->next != NULL)
 	{
-		_this = _this->next;
 		size++;
+		_this = _this->next;
 	}
 
 	return size;

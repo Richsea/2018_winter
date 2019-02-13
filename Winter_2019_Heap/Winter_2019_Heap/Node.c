@@ -6,7 +6,8 @@ node* new_node()
 {
 	node* _this = NewObject(node);
 	//_this->title = NewObject(char);	->	중단점 오류가 생기는데 이유는 파악 못함
-	_this = NULL;
+	_this->next = NULL;
+	return _this;
 }
 
 void setTitle(node* _this, char* data)
