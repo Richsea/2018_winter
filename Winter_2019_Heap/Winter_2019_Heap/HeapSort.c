@@ -36,7 +36,9 @@ node* doHeapSort(node* _this)
 		}
 
 		size--;	
-	}	
+	}
+
+	return head;
 }
 
 node* heap(node* _this, int parent, int last)
@@ -93,7 +95,16 @@ node* heap(node* _this, int parent, int last)
 		change = TRUE;
 	}
 
-	int max = MAX(getNum(getNext(_left)), getNum(getNext(_right)));
+	int max;
+	if (getNext(_right) != NULL)
+	{
+		max = MAX(getNum(getNext(_left)), getNum(getNext(_right)));
+	}
+	else
+	{
+		max = getNum(getNext(_left));
+	}
+	
 	if (getNum(getNext(_parent)) < max && !change)
 	{
 		node* _newChild;
@@ -160,4 +171,69 @@ int getSize(node* _this)
 	}
 
 	return size;
+}
+
+void insert(node* _this, int number, char* title)
+{
+	node* head = _this;
+	node* _newNode = new_node();
+	
+	while (_this->next != NULL)
+	{
+		_this = _this->next;
+	}
+
+	setNum(_newNode, number);
+	setTitle(_newNode, title);
+	setNext(_this, _newNode);
+
+	doHeapSort(head);
+}
+
+node* min(node* _this)
+{
+	return _this->next;
+}
+void extract_min(node* _this)
+{
+	node* _newNode = getNext(_this->next);
+	node_delete(_this->next);
+	_this->next = _newNode;
+	doHeapSort(_this);
+}
+boolean increase_key(node* _this, int prevNum, int changeNum)
+{
+	node* _newNode = getNext(_this->next);
+
+	while (_newNode->next != NULL)
+	{
+		if (getNum(_newNode->next) == prevNum)
+		{
+			setNum(_newNode->next, changeNum);
+			doHeapSort(_this);
+			return TRUE;
+		}
+		_newNode = _newNode->next;
+	}
+	return FALSE;
+}
+boolean delete(node* _this, int number)
+{
+	node* head = _this;
+
+	while (_this->next != NULL)
+	{
+		if (getNum(_this->next) == number)
+		{
+			node* _newNode = getNext(_this->next);
+			node_delete(_this->next);
+			_this->next = _newNode;
+			doHeapSort(head);
+
+			return TRUE;
+		}
+
+		_this = _this->next;
+	}
+	return FALSE;
 }
