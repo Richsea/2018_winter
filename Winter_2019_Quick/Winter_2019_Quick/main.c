@@ -1,6 +1,9 @@
+#include "Node.h"
 
 int main()
 {
-	readFile();
+	node* head = readFile();
+	doQuickSort(head, 1, getSize(head));
+
 	return 0;
 }

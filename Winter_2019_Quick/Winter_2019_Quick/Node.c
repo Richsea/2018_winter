@@ -21,7 +21,7 @@ void setData(node* _this, int data)
 }
 node* getNext(node* _this)
 {
-	return _this;
+	return _this->next;
 }
 int getData(node* _this)
 {
