@@ -7,7 +7,7 @@
 
 node* readFile(void)
 {
-	FILE *fp = fopen("test.txt", "r");
+	FILE *fp = fopen("data04.txt", "r");
 
 	char* buffer;
 	int size;
@@ -90,5 +90,36 @@ node* readFile(void)
 
 int writeFile(node* _result)
 {
+	FILE *fp = fopen("data04_QuickSort.txt", "wt");
+	fp = fopen("data04_QuickSort.txt", "a");
+
+	char answer[16];
+	int size = 0;
+
+	node* head = _result->next;
+
+	while (head != NULL)
+	{
+		size++;
+		head = head->next;
+	}
+
+	head = _result->next;
+
+	while (head->next != NULL)
+	{
+		char s1[10];
+		sprintf(s1, "%d", getData(head));
+		strcat(s1, ",");
+		fprintf(fp, s1);
+	
+		head = head->next;
+	}
+	char s1[10];
+	sprintf(s1, "%d", getData(head));
+	fprintf(fp, s1);
+
+	fclose(fp);
+
 	return 0;
 }
