@@ -12,16 +12,15 @@ void printResult(void)
 	int floorResult;
 	floorResult = doLogFloor(inputData);
 
-	int binaryFloorResult;
-	//binaryFloorResult = doBinarySearchFloor(inputData);
-
 	printf("\n---------------------------\n");
 	printf("Floor °á°ú: %d\n", floorResult);
 	printf("loop È½¼ö: %d\n", getFloorCount());
 
-	/*
+	int binaryFloorResult;
+	binaryFloorResult = doBinarySearchLogFloor(inputData);
+
 	printf("---------------------------\n");
 	printf("Binary Search Floor °á°ú: %d\n", binaryFloorResult);
 	printf("loop È½¼ö: %d\n", getBinaryFloorCount());
-	*/
+	
 }
