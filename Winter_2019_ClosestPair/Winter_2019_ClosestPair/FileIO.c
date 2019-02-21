@@ -3,10 +3,11 @@
 #include "FileIO.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 node* readFile(void)
 {
-	FILE *fp = fopen("data05_closest", "r");
+	FILE *fp = fopen("data05_closest.txt", "r");
 
 	char* buffer;
 	int size;
@@ -42,17 +43,17 @@ node* readFile(void)
 				s1[j] = buffer[i];
 				i++;
 				j++;
-				check = TRUE;
 			}
 			else
 			{
-				float num = atoi(s1);
+				float num = atof(s1);
 
 				_next = new_node();
 				
 				setDataX(_next, num);
 				
 				memset(s1, NULL, 10);
+				check = TRUE;
 				j = 0;
 				i++;
 			}
@@ -63,12 +64,11 @@ node* readFile(void)
 			if ((buffer[i] > 47 && buffer[i] < 58) || buffer[i] == '.')
 			{
 				s1[j] = buffer[i];
-				i++;
 				j++;
 			}
 			else if (buffer[i] == '\n')
 			{
-				float num = atoi(s1);
+				float num = atof(s1);
 
 				setDataY(_next, num);
 				setNext(_current, _next);
@@ -76,16 +76,16 @@ node* readFile(void)
 				_current = _current->next;
 				memset(s1, NULL, 10);
 				j = 0;
-				i++;
 				check = FALSE;
 			}
+			i++;
 		}
 	}
 
 	//check가 TRUE일 경우에는 Y축 좌표가 입력된 이후 ENTER가 존재하지 않을 경우
 	if (check)
 	{
-		float num = atoi(s1);
+		float num = atof(s1);
 		setDataY(_next, num);
 		setNext(_current, _next);
 	}
