@@ -127,6 +127,8 @@ shortestPair* findClosestPair(node* _this)
 		divideSize++;
 	}
 
+	node* _center = _start;
+
 	node* _temp = _newRight;
 	while (divideSize != size)
 	{
@@ -150,10 +152,27 @@ shortestPair* findClosestPair(node* _this)
 	}
 
 	// 세로로 최소범위 확인하는 작업 필요
-	node* _newNode = new_node();
-	node* _temp = _newNode;
+	node* _centerNode = new_node();
+	node* _nextCenter = _centerNode;
+	node* _temp = _head->next;
+
+	// 중앙 위치 찾기
+	while (_temp->next != NULL)
+	{
+		if (getDataX(_center) + getLength(leastPair) > getDataX(_temp))
+		{
+			if (getDataX(_center) - getLength(leastPair) < getDataX(_temp))
+			{
+				setNext(_nextCenter, _temp);
+				_nextCenter = _nextCenter->next;
+			}
+			_temp = _temp->next;
+			continue;
+		}
+		break;
+	}
 	
-	// 중앙 잡기
+	// 중앙 
 	
 
 	return leastPair;
